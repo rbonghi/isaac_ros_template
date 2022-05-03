@@ -39,6 +39,11 @@ bash build_image.bash [PROJECT_NAME]
  * **--tag [TAG_NAME]** - Tag release (Default tag: *latest*)
  * **--pull-base-image** - Force to re-pull the base image
 
+This script also *check* in the beginning if:
+ 1. You are running on ARM64 architecture
+ 2. Your NVIDIA Jetson have the [right requirements](#what-do-you-need)
+ 3. Your NVIDIA Jetson use the right NVIDIA runtime container and is able to build a certain of Isaac ROS packages
+
 ## Example output
 
 Such as example if you want to build an image `isaac_ros_template` you will need to write:
@@ -57,6 +62,7 @@ Such as example if you want to build an image `isaac_ros_template` you will need
 Developer blog posts and webinars:
  * [Integrating Isaac ROS Visual Odometry GEM on Jetson](https://info.nvidia.com/isaac-ros-and-nvidia-jetson-wbn.html)
  * [Isaac ROS tutorial](https://github.com/rbonghi/isaac_ros_tutorial)
+ * [Designing Robots with NVIDIA Isaac GEMs for ROS](https://developer.nvidia.com/blog/designing-robots-with-isaac-gems-for-ros/)
 
 
 Robot example with Isaac ROS:

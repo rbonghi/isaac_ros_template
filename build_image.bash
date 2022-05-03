@@ -62,7 +62,8 @@ check_build_isaac_ros()
                 case $yn in
                     [Yy]* ) # Break and install jetson_stats
                             break;;
-                    [Nn]* ) exit;;
+                    [Nn]* ) echo "${red}You cannot build a docker container for NVIDIA Isaac ROS on this NVIDIA Jetson${reset}"
+                            exit 33;;
                 * ) echo "Please answer yes or no.";;
             esac
         done
