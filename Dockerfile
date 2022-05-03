@@ -93,9 +93,9 @@ ENV LD_LIBRARY_PATH="/usr/lib/aarch64-linux-gnu/tegra-egl:${LD_LIBRARY_PATH}"
 # 1b. ############# Build ROS2 packages with vision fixes #################
 
 # Install pcl_conversions & sensor_msgs_py
-ARG ROSINSTALL=01_ros2_fix_build.rosinstall
+ARG ROSINSTALL=ros2_fix_build.rosinstall
 # Copy wstool rosinstall
-COPY ${ROSINSTALL} ${ROSINSTALL}
+COPY scripts/${ROSINSTALL} ${ROSINSTALL}
 
 # Fix image transport to v3.0.0
 # https://github.com/stereolabs/zed-ros2-wrapper/issues/66
@@ -138,14 +138,14 @@ RUN apt-get update && \
 
 # Build Isaac ROS package
 ENV ISAAC_ROS_WS /opt/isaac_ros_ws
-ARG ROSINSTALL=02_isaac_ros.rosinstall
+ARG ROSINSTALL=01_isaac_ros.rosinstall
 # Copy wstool rosinstall
 COPY ${ROSINSTALL} ${ROSINSTALL}
 
 RUN mkdir -p ${ISAAC_ROS_WS}/src && \
     vcs import ${ISAAC_ROS_WS}/src < ${ROSINSTALL}
 # Pull LFS files
-COPY git_lfs_pull_ws.sh git_lfs_pull_ws.sh
+COPY scripts/git_lfs_pull_ws.sh git_lfs_pull_ws.sh
 RUN TERM=xterm bash git_lfs_pull_ws.sh ${ISAAC_ROS_WS}/src
 
 # Change workdir
@@ -169,7 +169,7 @@ RUN . /opt/ros/$ROS_DISTRO/install/setup.sh && \
 ENV ROS_WS /opt/ros_ws
 RUN mkdir -p ${ROS_WS}/src
 
-ARG ROSINSTALL=03_your_ros2_pkgs.rosinstall
+ARG ROSINSTALL=02_your_ros2_pkgs.rosinstall
 # Copy wstool rosinstall
 COPY ${ROSINSTALL} ${ROSINSTALL}
 
