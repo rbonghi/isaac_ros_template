@@ -206,4 +206,4 @@ STOPSIGNAL SIGINT
 # 7. ############## Write your runtime command at startup #################
 
 # Uncomment the following line and write the launcher you want at docker container starup
-# CMD ["ros2", "launch", "your_pkg", "your_launcher.launch.py"]
+# CMD ["ros2", "launch", "your_ros2_pkg", "your_launcher.launch.py"]

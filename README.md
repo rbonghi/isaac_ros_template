@@ -1,10 +1,10 @@
 # 🍏 Isaac ROS Template
 
-Do you want to build your own NVIDIA Isaac ROS docker for your robot? this template fit for you!
+Do you want to build your own NVIDIA Isaac ROS docker for your robot? 
 
-**You only need to fork this repository!**
+This template is made it for you! **You only need to fork this repository!**
 
-Menu:
+Follow the steps below to be Isaac ROS GEMs dockerized:
  * [What do you need?](#what-do-you-need)
  * [How to use this template](#how-to-use-this-template)
  * [Where to edit?](#where-to-edit)
@@ -28,16 +28,28 @@ If you are looking to build a docker container for **x86 machines**, please look
 
 - Click on **Use this template** like the image below
 
+------
+
 ![Get Template](.images/01_get_template.png)
+
+------
 
 - On the next dialog, write a new name for your repository you would like to start and decide if you want all of the branches, or just the latest Isaac ROS distribution.
 - Click on **Create repository from this template** 
 
+------
+
 ![Create Template](.images/02_create_template.png)
+
+------
 
 Github will then create a new repository with the contents of this one in your account. It grabs the latest changes as "initial commit".
 
 - Now you can **clone your repo** as usual
+
+------
+
+![Clone repo](.images/03_clone_repo.png)
 
 # Where to edit?
 
@@ -87,7 +99,7 @@ Like the [stage 2](#stage-2-install-dedicate-packages-for-isaac-ros) write in th
 In this stage you need to uncomment the last line and write your specific launcher you want to run.
 
 ```Dockerfile
-# CMD ["ros2", "launch", "your_pkg", "your_launcher.launch.py"]
+CMD ["ros2", "launch", "your_ros2_pkg", "your_launcher.launch.py"]
 ```
 
 ## [01_isaac_ros.rosinstall](/01_isaac_ros.rosinstall)
