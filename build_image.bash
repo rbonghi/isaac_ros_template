@@ -65,7 +65,7 @@ main()
     local CI_BUILD=false
     local PULL_IMAGE=false
     if [ -z $1 ] ; then
-        usage "[ERROR] Missing [TAG_NAME]" >&2
+        usage "[ERROR] Missing [PROJECT_NAME]" >&2
         exit 1
     fi
     # Decode all information from startup
@@ -95,8 +95,7 @@ main()
                 if [[ ${1::1} == "-" ]] ; then
                     usage "[ERROR] Unknown option: $1" >&2
                     exit 1
-                fi
-                if [ -z $PROJECT_NAME ] ; then
+                elif [ -z $PROJECT_NAME ] ; then
                     PROJECT_NAME=$1
                 else
                     usage "[ERROR] Unknown option: $1" >&2
