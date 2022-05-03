@@ -40,17 +40,13 @@ usage()
     fi
     
     local name=$(basename ${0})
-    echo "Isaac_ros docker builder" >&2
-    echo "" >&2
-    echo "Commands:" >&2
-    echo "  -v                      |  Verbose. Schow extra info " >&2
-    echo "  -ci                     |  Build docker without cache " >&2
-    echo "  --push                  |  Push docker. Need to be logged in " >&2
-    echo "  --latest                |  Tag and push latest release" >&2
-    echo "  --repo REPO_NAME        |  Set repository to push " >&2
-    echo "  --no-pull-base-image    |  Pull the base image " >&2
-    echo "  --branch BRANCH_DISTRO  |  Set tag from branch " >&2
-    echo "  --base-image BASE_IMAGE |  Change base image to build. Default=${bold}$BASE_IMAGE_DEFAULT${reset}" >&2
+    echo "$name [PROJECT_NAME] [[OPTIONS]]" >&2
+    echo "OPTIONS:" >&2
+    echo "  -v                       |  Verbose. Schow extra info " >&2
+    echo "  -ci                      |  Build docker without cache " >&2
+    echo "  --push                   |  Push docker. Need to be logged in " >&2
+    echo "  --tag [TAG_NAME:=latest] |  Tag and push latest release" >&2
+    echo "  --pull-base-image        |  Pull the base image " >&2
 }
 
 main()
@@ -62,20 +58,19 @@ main()
         exit 33
     fi
     
-    local REPO_NAME="rbonghi/isaac_ros_tutorial"
-    local FOLDER=$1
-    
+    local PROJECT_NAME=""
+    local TAG_NAME="latest"
     local PUSH=false
     local VERBOSE=false
     local CI_BUILD=false
-    local PULL_IMAGE=true
-    local BRANCH_DISTRO=""
-    local LATEST=false
-    # Base image
-    local BASE_IMAGE=""
+    local PULL_IMAGE=false
+    if [ -z $1 ] ; then
+        usage "[ERROR] Missing [TAG_NAME]" >&2
+        exit 1
+    fi
     # Decode all information from startup
-    while [ -n "$2" ]; do
-        case "$2" in
+    while [ -n "$1" ]; do
+        case "$1" in
             -h|--help) # Load help
                 usage
                 exit 0
@@ -86,50 +81,31 @@ main()
             -ci)
                 CI_BUILD=true
             ;;
-            --repo)
-                REPO_NAME=$3
+            --tag)
+                TAG_NAME=$1
                 shift 1
             ;;
-            --branch)
-                BRANCH_DISTRO=$2
-                shift 1
-            ;;
-            --latest)
-                LATEST=true
-                shift 1
-            ;;
-            --no-pull-base-image)
-                PULL_IMAGE=false
+            --pull-base-image)
+                PULL_IMAGE=true
             ;;
             --push)
                 PUSH=true
             ;;
-            --base-image)
-                BASE_IMAGE=$3
-                shift 1
-            ;;
             *)
-                usage "[ERROR] Unknown option: $2" >&2
-                exit 1
+                if [[ ${1::1} == "-" ]] ; then
+                    usage "[ERROR] Unknown option: $1" >&2
+                    exit 1
+                fi
+                if [ -z $PROJECT_NAME ] ; then
+                    PROJECT_NAME=$1
+                else
+                    usage "[ERROR] Unknown option: $1" >&2
+                    exit 1
+                fi
             ;;
         esac
         shift 1
     done
-    
-    if [[ -z $FOLDER ]] ; then
-        echo "${red}Please write one of the tutorial folder you want build${reset}"
-        exit 33
-    fi
-    
-    # replace all blanks
-    REPO_NAME=${REPO_NAME//_/-}
-    
-    # Extract tag name
-    local TAG=${FOLDER#*-}
-    # Strip "/"
-    TAG=${TAG%"/"}
-    # replace all blanks
-    TAG=${TAG//_/-}
     
     if ! $PUSH ; then
         # Extract Libraries info
@@ -151,23 +127,16 @@ main()
             PULL_OPTION="--pull"
         fi
         
-        # move to folder
-        cd $FOLDER
-        if $VERBOSE ; then
-            echo "${yellow}- Change folder: $FOLDER ${reset}"
-            ls
-        fi
-        
-        echo "- Build repo ${green}$REPO_NAME:$TAG${reset}"
-        docker build $CI_OPTIONS $PULL_OPTION -t $REPO_NAME:$TAG --build-arg "DPKG_STATUS=$DPKG_STATUS" $BASE_IMAGE_ARG . || { echo "${red}docker build failure!${reset}"; exit 1; }
+        echo "- Build repo ${green}$PROJECT_NAME:$TAG_NAME${reset}"
+        docker build $CI_OPTIONS $PULL_OPTION -t $PROJECT_NAME:$TAG_NAME --build-arg "DPKG_STATUS=$DPKG_STATUS" . || { echo "${red}docker build failure!${reset}"; exit 1; }
         
         if $CI_BUILD ; then
             echo "- ${bold}Prune${reset} old docker images"
             docker image prune -f
         fi
     else
-        echo "- Push repo ${green}$REPO_NAME:$TAG${reset}"
-        docker image push $REPO_NAME:$TAG
+        echo "- Push repo ${green}$PROJECT_NAME:$TAG_NAME${reset}"
+        docker image push $PROJECT_NAME:$TAG_NAME
     fi
 }
 
