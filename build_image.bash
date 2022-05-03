@@ -43,11 +43,41 @@ check_l4t()
         local JETSON_L4T_ARRAY=$(echo $JETSON_L4T_STRING | cut -f 1 -d '-')
         # Load release and revision
         local JETSON_L4T_RELEASE=$(echo $JETSON_L4T_ARRAY | cut -f 1 -d '.')
-        local JETSON_L4T_REVISION=${JETSON_L4T_ARRAY#"$JETSON_L4T_CHECK."}
+        local JETSON_L4T_REVISION=${JETSON_L4T_ARRAY#"$JETSON_L4T_RELEASE."}
 
-        if [[ $JETSON_L4T_RELEASE.$JETSON_L4T_REVISION != $NANOSAUR_L4T ]] ; then
-            echo "${bold}${red}You cannot use Jetpack with L4T $JETSON_L4T_RELEASE.$JETSON_L4T_REVISION need L4T $JETSON_L4T_CHECK ${reset}"
+        if [[ $JETSON_L4T_RELEASE.$JETSON_L4T_REVISION != $JETSON_L4T_CHECK ]] ; then
+            echo "${red}You cannot use L4T $JETSON_L4T_RELEASE.$JETSON_L4T_REVISION you need ${bold}L4T $JETSON_L4T_CHECK ${reset}"
+            exit 33
         fi
+}
+
+check_build_isaac_ros()
+{
+    # Make sure the nvidia docker runtime will be used for builds
+    local DEFAULT_RUNTIME=$(docker info | grep "Default Runtime: nvidia" ; true)
+
+    if [[ -z "$DEFAULT_RUNTIME" ]]; then
+        while :; do
+            read -p "Do you wish to fix docker service to be able to build isaac-ros images? [Y/n] " yn
+                case $yn in
+                    [Yy]* ) # Break and install jetson_stats
+                            break;;
+                    [Nn]* ) exit;;
+                * ) echo "Please answer yes or no.";;
+            esac
+        done
+
+        echo "${yellow} - Set runtime nvidia on /etc/docker/daemon.json${reset}"
+        sudo mv /etc/docker/daemon.json /etc/docker/daemon.json.bkp
+        sudo cp scripts/daemon.json /etc/docker/daemon.json
+
+        local PATH_HOST_FILES4CONTAINER="/etc/nvidia-container-runtime/host-files-for-container.d"
+        echo "${green} - Enable dockers to build jetson_multimedia api folder${reset}"
+        sudo cp scripts/jetson_multimedia_api.csv $PATH_HOST_FILES4CONTAINER/jetson_multimedia_api.csv
+
+        echo "${yellow} - Restart docker server${reset}"
+        sudo systemctl restart docker.service
+    fi
 }
 
 usage()
@@ -74,9 +104,10 @@ main()
         echo "${red}Run this script only on ${bold}${green}NVIDIA${reset}${red} Jetson platform${reset}"
         exit 33
     fi
-
     # Check Jetpack version
-    check_l4t "34.7"
+    check_l4t "32.7.1"
+    # Check if is able to build Isaac ROS images
+    check_build_isaac_ros
     
     local PROJECT_NAME=""
     local TAG_NAME="latest"
