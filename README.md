@@ -1,13 +1,12 @@
 # 🍏 Isaac ROS Template
 
-**REPOSITORY UNDER CONSTRUCTION**
-
 Do you want to build your own NVIDIA Isaac ROS docker for your robot? this template fit for you!
 
 **You only need to fork this repository!**
 
 Menu:
  * [What do you need?](#what-do-you-need)
+ * [How to use this template](#how-to-use-this-template)
  * [Where to edit?](#where-to-edit)
  * [Build Isaac ROS Docker image](#build-isaac-ros-docker-image)
  * [Run You Isaac ROS docker container](#run-you-isaac-ros-docker-container)
@@ -24,6 +23,10 @@ You need:
  * [NVIDIA Jetpack 4.6.1](https://developer.nvidia.com/jetpack-sdk-461)
 
 If you are looking to build a docker container for **x86 machines**, please look the [NVIDIA Isaac common](https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common) repository 
+
+# How to use this template
+
+
 
 # Where to edit?
 
@@ -45,10 +48,19 @@ There are mainly 3 stage where you can work:
 
 If you are working with a specific Isaac ROS package, maybe you need to add specific dependecies.
 
-Below an example of dependecies you need to install for certain packages:
+Below a dependecies *example* that you need to install to for [Isaac ROS image segmentation](https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_image_segmentation):
 
 ```Dockerfile
-RUN aaa
+# Install Tao converter
+RUN mkdir -p /opt/nvidia/tao && \
+    cd /opt/nvidia/tao && \
+    wget https://developer.nvidia.com/jp46-20210820t231431z-001zip && \
+    unzip -j jp46-20210820t231431z-001zip -d /opt/nvidia/tao/jp4.6 && \
+    chmod 755 $(find /opt/nvidia/tao -name "tao-converter") && \
+    ln -sf $(find /opt/nvidia/tao -name "tao-converter")  /opt/nvidia/tao/tao-converter && \
+    rm jp46-20210820t231431z-001zip
+# Add Tao converter to PATH
+ENV PATH="${PATH}:/opt/nvidia/tao"
 ```
 
 **Remember to follow the [Docker writlines](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) guidelines to install al you need.**
