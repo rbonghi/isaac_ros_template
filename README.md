@@ -123,11 +123,15 @@ What are means the options above:
  * **--rm** - When you switch off the container will be also deleted
  * **--network host** - This container will share the network with the host. This option is helpful to read all topics from your host or from your laptop.
 
+ If you want to leave this container, you need only to press `CTRL-D`.
+
 **Hint:** there are devices that need to be conneted with your container. You can also add the option **--device** or **--privileged**.
 
 ## Docker Compose
 
 Another way to use your docker image, is make a docker compose file, if you never hear that, watch the [documentation](https://docs.docker.com/compose/)
+
+Write a file called `docker-compose.yml` and write like below:
 
 ```yml
 version: "3.9"
@@ -139,6 +143,12 @@ services:
       # If you are working with a MIPI camera
       # you need to uncomment the line below
       # - "/tmp/argus_socket:/tmp/argus_socket" 
+```
+
+If you want to run this compose, remember to use:
+
+```
+docker compose up
 ```
 
 ## Example output
@@ -155,7 +165,10 @@ A good way to work with your docker image and check works well or is well built,
 docker run --rm --network host -it [PROJECT_NAME]:latest bash
 ```
 
-or if you want to test meanwhile the docker is running you can use:
+This command, will make a new container with a bash attached on your current terminal and you will be able to work on it. If you want to leave this container, you need only to press `CTRL-D`.
+
+
+If you want to test meanwhile the docker is running you can use:
 
 ```
 docker exec -it <DOCKER_CONTAINER_NAME> bash
@@ -182,4 +195,3 @@ Robot example with Isaac ROS:
  * [nanosaur.ai](https://nanosaur.ai)
  * [nanosaur architecture](https://nanosaur.ai/architecture/)
  * [nanosaur_perception](https://github.com/rnanosaur/nanosaur_perception) GPU accelerated repository
-
