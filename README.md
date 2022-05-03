@@ -32,9 +32,9 @@ bash build_image.bash [PROJECT_NAME]
 **Options:**
  * **-v** - Verbose
  * **-ci** - Build docker without cache
- * **--push** - Push docker. Need to be logged in
- * **--tag** *[TAG_NAME:=latest]* - Tag and push latest release
- * **--pull-base-image** - Pull the base image
+ * **--push** - Push docker image. Before to push, you need to be logged in
+ * **--tag** - Tag and push latest release (Default tag: *latest*)
+ * **--pull-base-image** - Force to re-pull the base image
 
 ## Example output
 

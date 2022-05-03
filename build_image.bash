@@ -42,11 +42,11 @@ usage()
     local name=$(basename ${0})
     echo "$name [PROJECT_NAME] [[OPTIONS]]" >&2
     echo "OPTIONS:" >&2
-    echo "  -v                       |  Verbose. Show extra info " >&2
-    echo "  -ci                      |  Build docker without cache " >&2
-    echo "  --push                   |  Push docker. Need to be logged in " >&2
-    echo "  --tag [TAG_NAME:=latest] |  Tag and push latest release" >&2
-    echo "  --pull-base-image        |  Pull the base image " >&2
+    echo "  -v                  |  Verbose. Show extra info " >&2
+    echo "  -ci                 |  Build docker without cache " >&2
+    echo "  --push              |  Push docker image. Before to push, you need to be logged in" >&2
+    echo "  --tag [latest]      |  Tag and push latest release" >&2
+    echo "  --pull-base-image   |  Force to re-pull the base image" >&2
 }
 
 main()
