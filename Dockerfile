@@ -174,8 +174,8 @@ ARG ROSINSTALL=02_your_ros2_pkgs.rosinstall
 
 # Copy wstool rosinstall
 COPY ${ROSINSTALL} ${ROSINSTALL}
-RUN if [ -s ${ROSINSTALL} ]; then \
-        mkdir -p ${ROS_WS}/src && \
+RUN mkdir -p ${ROS_WS}/src && \
+    if [ -s ${ROSINSTALL} ]; then \
         vcs import ${ROS_WS}/src < ${ROSINSTALL} \
     ; fi
 
@@ -189,7 +189,7 @@ RUN . /opt/ros/$ROS_DISTRO/install/setup.sh && \
     --cmake-args \
     -DCMAKE_BUILD_TYPE=Release
 
-# 4. ############## Final enviroment setup ################################
+# 6. ############## Final enviroment setup ################################
 
 # Restore using the default Foxy DDS middleware: FastRTPS
 ENV RMW_IMPLEMENTATION=rmw_fastrtps_cpp
@@ -202,3 +202,8 @@ RUN sed --in-place --expression \
 # https://docs.docker.com/engine/reference/builder/#stopsignal
 # https://hynek.me/articles/docker-signals/
 STOPSIGNAL SIGINT
+
+# 7. ############## Write your runtime at startup #########################
+
+# Uncomment the following line and write the launcher you want at docker container starup
+# CMD ["ros2", "launch", "your_pkg", "your_launcher.launch.py"]
