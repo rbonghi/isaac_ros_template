@@ -129,7 +129,8 @@ RUN apt-get update && \
 
 
 
-# TODO
+# Add here extra dependecies for specific NVIDIA Isaac ROS packages
+# Open README
 
 
 
@@ -141,9 +142,9 @@ ENV ISAAC_ROS_WS /opt/isaac_ros_ws
 ARG ROSINSTALL=01_isaac_ros.rosinstall
 # Copy wstool rosinstall
 COPY ${ROSINSTALL} ${ROSINSTALL}
-
 RUN mkdir -p ${ISAAC_ROS_WS}/src && \
     vcs import ${ISAAC_ROS_WS}/src < ${ROSINSTALL}
+
 # Pull LFS files
 COPY scripts/git_lfs_pull_ws.sh git_lfs_pull_ws.sh
 RUN TERM=xterm bash git_lfs_pull_ws.sh ${ISAAC_ROS_WS}/src
@@ -157,26 +158,31 @@ RUN . /opt/ros/$ROS_DISTRO/install/setup.sh && \
     --cmake-args \
     -DCMAKE_BUILD_TYPE=Release
 
-# 3. ############## BUILD & INSTALL your ROS2 packages ####################
+# 4. ############## INSTALL your dependecies ##############################
 
 
 
-# TODO
+# Add Here extra dependecies for your specific ROS2 packages
 
 
+
+# 5. ############## BUILD & INSTALL your ROS2 packages ####################
 
 # Download and build ros2 workspace
 ENV ROS_WS /opt/ros_ws
-RUN mkdir -p ${ROS_WS}/src
-
 ARG ROSINSTALL=02_your_ros2_pkgs.rosinstall
+
 # Copy wstool rosinstall
 COPY ${ROSINSTALL} ${ROSINSTALL}
+RUN if [ -s ${ROSINSTALL} ]; then \
+        mkdir -p ${ROS_WS}/src && \
+        vcs import ${ROS_WS}/src < ${ROSINSTALL} \
+    ; fi
 
 # Change workdir
 WORKDIR $ROS_WS
 
-# Build Isaac ROS
+# Build your ROS2 packages and use Isaac ROS WS
 RUN . /opt/ros/$ROS_DISTRO/install/setup.sh && \
     . $ISAAC_ROS_WS/install/setup.sh && \
     colcon build --symlink-install \
