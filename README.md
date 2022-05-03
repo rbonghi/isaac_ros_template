@@ -116,6 +116,8 @@ Briefly you need only to add after Isaac ROS common, 3 lines for each repository
     uri: <REPOSITORY URL>
 ```
 
+**PLEASE, DO NOT DELETE Isaac ROS common! It's always a repository needed in your Isaac ROS rosinstall portfolio**
+
 ## [02_your_ros2_pkgs.rosinstall](/02_your_ros2_pkgs.rosinstall)
 
 Like [above](#01isaacrosrosinstall) you can add here all your workspaces you want to add in your Dockerfile
