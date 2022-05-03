@@ -20,9 +20,9 @@ If you are looking to build a docker container for **x86 machines**, please look
 # Where to edit?
 
 There are three parts on this template to edit:
-1. [Dockerfile](#dockerfiledockerfile)
-2. [01_isaac_ros.rosinstall](#01isaacrosrosinstall01isaacrosrosinstall)
-3. [02_your_ros2_pkgs.rosinstall](#02yourros2pkgsrosinstall02yourros2pkgsrosinstall)
+1. [Dockerfile](#dockerfile)
+2. [01_isaac_ros.rosinstall](#01_isaac_rosrosinstall)
+3. [02_your_ros2_pkgs.rosinstall](#02_your_ros2_pkgsrosinstall)
 
 Let's move step by step and learn where you need to change
 
