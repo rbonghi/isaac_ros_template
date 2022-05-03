@@ -1,4 +1,4 @@
-# Isaac ROS Template
+# 🍏 Isaac ROS Template
 
 **REPOSITORY UNDER CONSTRUCTION**
 
@@ -23,6 +23,51 @@ There are three parts on this template to edit:
 1. [Dockerfile](/Dockerfile)
 2. [01_isaac_ros.rosinstall](/01_isaac_ros.rosinstall)
 3. [02_your_ros2_pkgs.rosinstall](/02_your_ros2_pkgs.rosinstall)
+
+Let's move step by step and learn where you need to change
+
+## Dockerfile
+
+There are mainly 3 stage where you can work:
+ * **Stage 2** _(around line 128)_: "Install dedicate packages for Isaac ROS"
+ * **Stage 4** _(around line 161)_: "Install your ROS2 dependecies"
+ * **Stage 7** _(around line 206)_: "Write your runtime command at startup"
+
+### (Stage 2) Install dedicate packages for Isaac ROS
+
+If you are working with a specific Isaac ROS package, maybe you need to add specific dependecies
+
+### (Stage 4) Install your ROS2 dependecies
+
+Like the [stage 2](#stage-2-install-dedicate-packages-for-isaac-ros) write in this stage all dependecies you need to be able to build your ROS2 packages.
+
+**Remember to follow the Docker writlines guidelines to install al you need.**
+
+### (Stage 7) Write your runtime command at startup
+
+In this stage you need to uncomment the last line and write your specific launcher you want to run.
+
+```Dockerfile
+# CMD ["ros2", "launch", "your_pkg", "your_launcher.launch.py"]
+```
+
+## 01_isaac_ros.rosinstall
+
+This *rosinstall* file collect all Isaac ROS repository you need to use for your robot.
+
+Do you know how to make a rosinstall file? The full rosinstall documentation is available [here!](https://docs.ros.org/en/independent/api/rosinstall/html/rosinstall_file_format.html)
+
+Briefly you need only to add after Isaac ROS common, 3 lines like below:
+
+```yml
+- git:
+    local-name: <REPOSITORY NAME>
+    uri: <REPOSITORY URL>
+```
+
+## 02_your_ros2_pkgs.rosinstall
+
+Like [above](#01isaacrosrosinstall) you can add here all your workspaces you want to add in your Dockerfile
 
 # Build Isaac ROS Docker image
 
@@ -61,7 +106,7 @@ Such as example if you want to build an image `isaac_ros_template` you will need
 
 Developer blog posts and webinars:
  * [Integrating Isaac ROS Visual Odometry GEM on Jetson](https://info.nvidia.com/isaac-ros-and-nvidia-jetson-wbn.html)
- * [Isaac ROS tutorial](https://github.com/rbonghi/isaac_ros_tutorial)
+ * [Isaac ROS tutorial](https://github.com/rbonghi/isaac_ros_tutorial) Many examples to build your own docker for Isaac ROS
  * [Designing Robots with NVIDIA Isaac GEMs for ROS](https://developer.nvidia.com/blog/designing-robots-with-isaac-gems-for-ros/)
 
 

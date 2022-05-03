@@ -134,7 +134,7 @@ RUN apt-get update && \
 
 
 
-# 3. ############## BUILD & INSTALL ISAAC ROS packages ####################
+# 3. ############## Build & Install Isaac ROS packages ####################
 # From this stage you can list all packages you want to build
 
 # Build Isaac ROS package
@@ -158,7 +158,7 @@ RUN . /opt/ros/$ROS_DISTRO/install/setup.sh && \
     --cmake-args \
     -DCMAKE_BUILD_TYPE=Release
 
-# 4. ############## INSTALL your dependecies ##############################
+# 4. ############## Install your ROS2 dependecies #########################
 
 
 
@@ -166,7 +166,7 @@ RUN . /opt/ros/$ROS_DISTRO/install/setup.sh && \
 
 
 
-# 5. ############## BUILD & INSTALL your ROS2 packages ####################
+# 5. ############## Build & Install your ROS2 packages ####################
 
 # Download and build ros2 workspace
 ENV ROS_WS /opt/ros_ws
@@ -203,7 +203,7 @@ RUN sed --in-place --expression \
 # https://hynek.me/articles/docker-signals/
 STOPSIGNAL SIGINT
 
-# 7. ############## Write your runtime at startup #########################
+# 7. ############## Write your runtime command at startup #################
 
 # Uncomment the following line and write the launcher you want at docker container starup
 # CMD ["ros2", "launch", "your_pkg", "your_launcher.launch.py"]
