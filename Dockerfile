@@ -145,7 +145,8 @@ COPY ${ROSINSTALL} ${ROSINSTALL}
 RUN mkdir -p ${ISAAC_ROS_WS}/src && \
     vcs import ${ISAAC_ROS_WS}/src < ${ROSINSTALL}
 # Pull LFS files
-RUN cd ${ISAAC_ROS_WS}/src/isaac_ros_common && git lfs pull
+COPY git_lfs_pull_ws.sh git_lfs_pull_ws.sh
+RUN TERM=xterm bash git_lfs_pull_ws.sh ${ISAAC_ROS_WS}/src
 
 # Change workdir
 WORKDIR $ISAAC_ROS_WS
@@ -171,6 +172,9 @@ RUN mkdir -p ${ROS_WS}/src
 ARG ROSINSTALL=03_your_ros2_pkgs.rosinstall
 # Copy wstool rosinstall
 COPY ${ROSINSTALL} ${ROSINSTALL}
+
+# Change workdir
+WORKDIR $ROS_WS
 
 # Build Isaac ROS
 RUN . /opt/ros/$ROS_DISTRO/install/setup.sh && \
