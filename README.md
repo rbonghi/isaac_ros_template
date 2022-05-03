@@ -20,13 +20,13 @@ If you are looking to build a docker container for **x86 machines**, please look
 # Where to edit?
 
 There are three parts on this template to edit:
-1. [Dockerfile](/Dockerfile)
-2. [01_isaac_ros.rosinstall](/01_isaac_ros.rosinstall)
-3. [02_your_ros2_pkgs.rosinstall](/02_your_ros2_pkgs.rosinstall)
+1. [Dockerfile](#dockerfiledockerfile)
+2. [01_isaac_ros.rosinstall](#01isaacrosrosinstall01isaacrosrosinstall)
+3. [02_your_ros2_pkgs.rosinstall](#02yourros2pkgsrosinstall02yourros2pkgsrosinstall)
 
 Let's move step by step and learn where you need to change
 
-## Dockerfile
+## [Dockerfile](/Dockerfile)
 
 There are mainly 3 stage where you can work:
  * **Stage 2** _(around line 128)_: "Install dedicate packages for Isaac ROS"
@@ -51,7 +51,7 @@ In this stage you need to uncomment the last line and write your specific launch
 # CMD ["ros2", "launch", "your_pkg", "your_launcher.launch.py"]
 ```
 
-## 01_isaac_ros.rosinstall
+## [01_isaac_ros.rosinstall](/01_isaac_ros.rosinstall)
 
 This *rosinstall* file collect all Isaac ROS repository you need to use for your robot.
 
@@ -65,7 +65,7 @@ Briefly you need only to add after Isaac ROS common, 3 lines like below:
     uri: <REPOSITORY URL>
 ```
 
-## 02_your_ros2_pkgs.rosinstall
+## [02_your_ros2_pkgs.rosinstall](/02_your_ros2_pkgs.rosinstall)
 
 Like [above](#01isaacrosrosinstall) you can add here all your workspaces you want to add in your Dockerfile
 
