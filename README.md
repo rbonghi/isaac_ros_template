@@ -6,6 +6,14 @@ Do you want to build your own NVIDIA Isaac ROS docker for your robot? this templ
 
 **You only need to fork this repository!**
 
+Menu:
+ * [What do you need?](#what-do-you-need)
+ * [Where to edit?](#where-to-edit)
+ * [Build Isaac ROS Docker image](#build-isaac-ros-docker-image)
+ * [Run You Isaac ROS docker container](#run-you-isaac-ros-docker-container)
+ * [Debug your container](#debug-your-container)
+ * [Reference](#reference)
+
 # What do you need?
 
 You need:
@@ -29,19 +37,27 @@ Let's move step by step and learn where you need to change
 ## [Dockerfile](/Dockerfile)
 
 There are mainly 3 stage where you can work:
- * **Stage 2** _(around line 128)_: "Install dedicate packages for Isaac ROS"
- * **Stage 4** _(around line 161)_: "Install your ROS2 dependecies"
- * **Stage 7** _(around line 206)_: "Write your runtime command at startup"
+ * [**Stage 2**](#stage-2-install-dedicate-packages-for-isaac-ros) _(around line 128)_: "Install dedicate packages for Isaac ROS"
+ * [**Stage 4**](#stage-4-install-your-ros2-dependecies) _(around line 161)_: "Install your ROS2 dependecies"
+ * [**Stage 7**](#stage-7-write-your-runtime-command-at-startup) _(around line 206)_: "Write your runtime command at startup"
 
 ### (Stage 2) Install dedicate packages for Isaac ROS
 
-If you are working with a specific Isaac ROS package, maybe you need to add specific dependecies
+If you are working with a specific Isaac ROS package, maybe you need to add specific dependecies.
+
+Below an example of dependecies you need to install for certain packages:
+
+```Dockerfile
+RUN aaa
+```
+
+**Remember to follow the [Docker writlines](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) guidelines to install al you need.**
 
 ### (Stage 4) Install your ROS2 dependecies
 
 Like the [stage 2](#stage-2-install-dedicate-packages-for-isaac-ros) write in this stage all dependecies you need to be able to build your ROS2 packages.
 
-**Remember to follow the Docker writlines guidelines to install al you need.**
+**Remember to follow the [Docker writlines](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) guidelines to install al you need.**
 
 ### (Stage 7) Write your runtime command at startup
 
@@ -94,6 +110,58 @@ This script also *check* in the beginning if:
 Such as example if you want to build an image `isaac_ros_template` you will need to write:
 
 `bash build_image.bash isaac_ros_template` where the docker image will be: `isaac_ros_template:latest`
+
+# Run You Isaac ROS docker container
+
+If you are reading this chapter, you are in the end of the process and you want to try Isaac ROS.
+
+```
+docker run --rm --network host [PROJECT_NAME]:latest
+```
+
+What are means the options above:
+ * **--rm** - When you switch off the container will be also deleted
+ * **--network host** - This container will share the network with the host. This option is helpful to read all topics from your host or from your laptop.
+
+**Hint:** there are devices that need to be conneted with your container. You can also add the option **--device** or **--privileged**.
+
+## Docker Compose
+
+Another way to use your docker image, is make a docker compose file, if you never hear that, watch the [documentation](https://docs.docker.com/compose/)
+
+```yml
+version: "3.9"
+services:
+  isaac_ros_service: 
+    image: [PROJECT_NAME]:latest
+    network_mode: host
+    volumes:
+      # If you are working with a MIPI camera
+      # you need to uncomment the line below
+      # - "/tmp/argus_socket:/tmp/argus_socket" 
+```
+
+## Example output
+
+If you have build your image with `isaac_ros_template` the command will be like:
+
+`docker run --rm --network host isaac_ros_template:latest`
+
+# Debug your container
+
+A good way to work with your docker image and check works well or is well built, you can use the command below
+
+```
+docker run --rm --network host -it [PROJECT_NAME]:latest bash
+```
+
+or if you want to test meanwhile the docker is running you can use:
+
+```
+docker exec -it <DOCKER_CONTAINER_NAME> bash
+```
+
+In this case, your terminal will be attached to the your docker Isaac ROS container.
 
 # Reference
 
