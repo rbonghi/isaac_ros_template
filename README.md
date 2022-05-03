@@ -57,7 +57,7 @@ This *rosinstall* file collect all Isaac ROS repository you need to use for your
 
 Do you know how to make a rosinstall file? The full rosinstall documentation is available [here!](https://docs.ros.org/en/independent/api/rosinstall/html/rosinstall_file_format.html)
 
-Briefly you need only to add after Isaac ROS common, 3 lines like below:
+Briefly you need only to add after Isaac ROS common, 3 lines for each repository like below:
 
 ```yml
 - git:
