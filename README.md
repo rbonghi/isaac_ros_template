@@ -26,7 +26,18 @@ If you are looking to build a docker container for **x86 machines**, please look
 
 # How to use this template
 
+- Click on **Use this template** like the image below
 
+![Get Template](.images/01_get_template.png)
+
+- On the next dialog, write a new name for your repository you would like to start and decide if you want all of the branches, or just the latest Isaac ROS distribution.
+- Click on **Create repository from this template** 
+
+![Create Template](.images/02_create_template.png)
+
+Github will then create a new repository with the contents of this one in your account. It grabs the latest changes as "initial commit".
+
+- Now you can **clone your repo** as usual
 
 # Where to edit?
 
