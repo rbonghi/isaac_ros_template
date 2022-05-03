@@ -9,10 +9,13 @@ Do you want to build your own NVIDIA Isaac ROS docker for your robot? this templ
 # What do you need?
 
 You need:
- * [NVIDIA Jetson AGX Xavier or Xavier NX ](https://developer.nvidia.com/buy-jetson)
+ * [NVIDIA Jetson](https://developer.nvidia.com/buy-jetson)
+   *  NVIDIA Jetson AGX Xavier
+   *  NVIDIA Jetson Xavier NX
+   *  NVIDIA Jetson Nano (4Gb or 2Gb)
  * [NVIDIA Jetpack 4.6.1](https://developer.nvidia.com/jetpack-sdk-461)
 
-If you are looking to build a docker container for x86 machines, please look the [NVIDIA Isaac common](https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common) repository 
+If you are looking to build a docker container for **x86 machines**, please look the [NVIDIA Isaac common](https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common) repository 
 
 # Where to edit?
 
@@ -33,7 +36,7 @@ bash build_image.bash [PROJECT_NAME]
  * **-v** - Verbose
  * **-ci** - Build docker without cache
  * **--push** - Push docker image. Before to push, you need to be logged in
- * **--tag** - Tag and push latest release (Default tag: *latest*)
+ * **--tag [TAG_NAME]** - Tag release (Default tag: *latest*)
  * **--pull-base-image** - Force to re-pull the base image
 
 ## Example output

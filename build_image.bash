@@ -28,9 +28,26 @@ reset=`tput sgr0`
 # Get the entry in the dpkg status file corresponding to the provied package name
 # Prepend two newlines so it can be safely added to the end of any existing
 # dpkg/status file.
-get_dpkg_status() {
+get_dpkg_status()
+{
     echo -e "\n"
     awk '/Package: '"$1"'/,/^$/' /var/lib/dpkg/status
+}
+
+check_l4t()
+{
+        local JETSON_L4T_CHECK=$1
+        # Read version
+        local JETSON_L4T_STRING=$(dpkg-query --showformat='${Version}' --show nvidia-l4t-core)
+        # extract version
+        local JETSON_L4T_ARRAY=$(echo $JETSON_L4T_STRING | cut -f 1 -d '-')
+        # Load release and revision
+        local JETSON_L4T_RELEASE=$(echo $JETSON_L4T_ARRAY | cut -f 1 -d '.')
+        local JETSON_L4T_REVISION=${JETSON_L4T_ARRAY#"$JETSON_L4T_CHECK."}
+
+        if [[ $JETSON_L4T_RELEASE.$JETSON_L4T_REVISION != $NANOSAUR_L4T ]] ; then
+            echo "${bold}${red}You cannot use Jetpack with L4T $JETSON_L4T_RELEASE.$JETSON_L4T_REVISION need L4T $JETSON_L4T_CHECK ${reset}"
+        fi
 }
 
 usage()
@@ -45,7 +62,7 @@ usage()
     echo "  -v                  |  Verbose. Show extra info " >&2
     echo "  -ci                 |  Build docker without cache " >&2
     echo "  --push              |  Push docker image. Before to push, you need to be logged in" >&2
-    echo "  --tag [latest]      |  Tag and push latest release" >&2
+    echo "  --tag [TAG_NAME]    |  Tag release (default latest)" >&2
     echo "  --pull-base-image   |  Force to re-pull the base image" >&2
 }
 
@@ -57,6 +74,9 @@ main()
         echo "${red}Run this script only on ${bold}${green}NVIDIA${reset}${red} Jetson platform${reset}"
         exit 33
     fi
+
+    # Check Jetpack version
+    check_l4t "34.7"
     
     local PROJECT_NAME=""
     local TAG_NAME="latest"
