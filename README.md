@@ -13,6 +13,8 @@ Follow the steps below to be Isaac ROS GEMs dockerized:
  * [Debug your container](#debug-your-container)
  * [Reference](#reference)
 
+An example to use this template, watch this repository: [isaac_ros_realsense_example](https://github.com/rbonghi/isaac_ros_realsense_example)
+
 # What do you need?
 
 You need:
